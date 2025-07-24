@@ -1,0 +1,42 @@
+# Dependency directories
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Static uploads
+public/uploads/
+uploads/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# dotenv environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
+
+# Next.js
+.next/
+.vercel/
+.cache/
+
+# Vite
+.vite/
+*.tsbuildinfo
+
+# Editor/IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Mac/Linux specific
+*.swp
