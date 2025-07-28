@@ -1,0 +1,148 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        // Using CSS variables for colors
+        background: "rgb(var(--color-background) / <alpha-value>)",
+        foreground: "rgb(var(--color-foreground) / <alpha-value>)",
+        border: "rgb(var(--color-border) / <alpha-value>)",
+        input: "rgb(var(--color-input) / <alpha-value>)",
+        ring: "rgb(var(--color-ring) / <alpha-value>)",
+
+        // Primary brand colors
+        primary: {
+          50: "#eef2ff",
+          100: "#e0e7ff",
+          200: "#c7d2fe",
+          300: "#a5b4fc",
+          400: "#818cf8",
+          500: "#6366f1",
+          600: "#4f46e5",
+          700: "#4338ca",
+          800: "#3730a3",
+          900: "#312e81",
+          950: "#1e1b4b",
+          DEFAULT: "rgb(var(--color-primary) / <alpha-value>)",
+          foreground: "rgb(var(--color-primary-foreground) / <alpha-value>)",
+        },
+        secondary: {
+          50: "#faf5ff",
+          100: "#f3e8ff",
+          200: "#e9d5ff",
+          300: "#d8b4fe",
+          400: "#c084fc",
+          500: "#a855f7",
+          600: "#9333ea",
+          700: "#7c3aed",
+          800: "#6b21a8",
+          900: "#581c87",
+          950: "#3b0764",
+          DEFAULT: "rgb(var(--color-secondary) / <alpha-value>)",
+          foreground: "rgb(var(--color-secondary-foreground) / <alpha-value>)",
+        },
+        // Semantic colors
+        success: {
+          50: "#f0fdf4",
+          100: "#dcfce7",
+          200: "#bbf7d0",
+          300: "#86efac",
+          400: "#4ade80",
+          500: "#22c55e",
+          600: "#16a34a",
+          700: "#15803d",
+          800: "#166534",
+          900: "#14532d",
+          DEFAULT: "rgb(var(--color-success) / <alpha-value>)",
+          foreground: "rgb(var(--color-success-foreground) / <alpha-value>)",
+        },
+        warning: {
+          50: "#fffbeb",
+          100: "#fef3c7",
+          200: "#fde68a",
+          300: "#fcd34d",
+          400: "#fbbf24",
+          500: "#f59e0b",
+          600: "#d97706",
+          700: "#b45309",
+          800: "#92400e",
+          900: "#78350f",
+          DEFAULT: "rgb(var(--color-warning) / <alpha-value>)",
+          foreground: "rgb(var(--color-warning-foreground) / <alpha-value>)",
+        },
+        error: {
+          50: "#fef2f2",
+          100: "#fee2e2",
+          200: "#fecaca",
+          300: "#fca5a5",
+          400: "#f87171",
+          500: "#ef4444",
+          600: "#dc2626",
+          700: "#b91c1c",
+          800: "#991b1b",
+          900: "#7f1d1d",
+          DEFAULT: "rgb(var(--color-error) / <alpha-value>)",
+          foreground: "rgb(var(--color-error-foreground) / <alpha-value>)",
+        },
+        muted: {
+          DEFAULT: "rgb(var(--color-muted) / <alpha-value>)",
+          foreground: "rgb(var(--color-muted-foreground) / <alpha-value>)",
+        },
+      },
+      fontFamily: {
+        sans: ["Inter", "system-ui", "sans-serif"],
+        heading: ["Poppins", "system-ui", "sans-serif"],
+      },
+      fontSize: {
+        xs: ["0.75rem", { lineHeight: "1rem" }],
+        sm: ["0.875rem", { lineHeight: "1.25rem" }],
+        base: ["1rem", { lineHeight: "1.5rem" }],
+        lg: ["1.125rem", { lineHeight: "1.75rem" }],
+        xl: ["1.25rem", { lineHeight: "1.75rem" }],
+        "2xl": ["1.5rem", { lineHeight: "2rem" }],
+        "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
+        "4xl": ["2.25rem", { lineHeight: "2.5rem" }],
+        "5xl": ["3rem", { lineHeight: "1" }],
+      },
+      spacing: {
+        18: "4.5rem",
+        88: "22rem",
+        128: "32rem",
+      },
+      borderRadius: {
+        xl: "0.75rem",
+        "2xl": "1rem",
+        "3xl": "1.5rem",
+      },
+      boxShadow: {
+        soft: "0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)",
+        medium:
+          "0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+        large:
+          "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+        colored: "0 10px 25px -3px rgba(99, 102, 241, 0.3)",
+      },
+      animation: {
+        "fade-in": "fadeIn 0.5s ease-in-out",
+        "slide-up": "slideUp 0.3s ease-out",
+        "bounce-soft": "bounceSoft 2s infinite",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        slideUp: {
+          "0%": { transform: "translateY(10px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        bounceSoft: {
+          "0%, 100%": { transform: "translateY(-5%)" },
+          "50%": { transform: "translateY(0)" },
+        },
+      },
+    },
+  },
+  plugins: [],
+};

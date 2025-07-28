@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
-import QRCode from 'qrcode';
-import fs from 'fs';
-import os from 'os';
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
+import fs from "fs";
+import os from "os";
+import QRCode from "qrcode";
 
 const prisma = new PrismaClient();
 
@@ -10,22 +10,24 @@ function getLocalIp() {
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {
     for (const iface of interfaces[name]) {
-      if (iface.family === 'IPv4' && !iface.internal) {
+      if (iface.family === "IPv4" && !iface.internal) {
         return iface.address;
       }
     }
   }
-  return 'localhost';
+  return "localhost";
 }
 
 async function main() {
   // Seed admin user
-  const adminEmail = 'admin@example.com';
-  const adminPassword = 'admin123';
-  const adminName = 'Admin';
-  const adminRole = 'admin';
+  const adminEmail = "admin@example.com";
+  const adminPassword = "admin123";
+  const adminName = "Admin";
+  const adminRole = "admin";
 
-  const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
+  const existingAdmin = await prisma.user.findUnique({
+    where: { email: adminEmail },
+  });
   if (!existingAdmin) {
     const hashed = await bcrypt.hash(adminPassword, 10);
     await prisma.user.create({
@@ -36,14 +38,32 @@ async function main() {
         role: adminRole,
       },
     });
-    console.log('Admin user seeded.');
+    console.log("Admin user seeded.");
   } else {
-    console.log('Admin user already exists.');
+    console.log("Admin user already exists.");
+  }
+
+  const existingUser = await prisma.user.findUnique({
+    where: { email: "tanmay@example.com" },
+  });
+  if (!existingUser) {
+    const hashed = await bcrypt.hash(adminPassword, 10);
+    await prisma.user.create({
+      data: {
+        name: "Tanmay",
+        email: "tanmay@example.com",
+        password: hashed,
+        role: "kitchen",
+      },
+    });
+    console.log("Kitchen user seeded.");
+  } else {
+    console.log("Kitchen user already exists.");
   }
 
   // Ensure uploads directory exists
-  if (!fs.existsSync('uploads')) {
-    fs.mkdirSync('uploads');
+  if (!fs.existsSync("uploads")) {
+    fs.mkdirSync("uploads");
   }
 
   // Seed tables with QR codes
@@ -60,7 +80,10 @@ async function main() {
     } else {
       // Optionally update QR code if not present
       if (!exists.qrCode) {
-        await prisma.table.update({ where: { id: exists.id }, data: { qrCode: qrFile } });
+        await prisma.table.update({
+          where: { id: exists.id },
+          data: { qrCode: qrFile },
+        });
         console.log(`Updated table: ${number} with QR`);
       } else {
         console.log(`Table already exists: ${number}`);
@@ -71,44 +94,51 @@ async function main() {
   // Seed menu items
   const menuItems = [
     {
-      name: 'Pav Bhaji',
-      description: 'Spicy mashed vegetables served with buttered bread rolls',
+      name: "Pav Bhaji",
+      description: "Spicy mashed vegetables served with buttered bread rolls",
       price: 5.0,
       available: true,
-      imageUrl: 'https://www.vegrecipesofindia.com/wp-content/uploads/2021/06/pav-bhaji-recipe-1.jpg',
+      imageUrl:
+        "https://www.vegrecipesofindia.com/wp-content/uploads/2021/06/pav-bhaji-recipe-1.jpg",
     },
     {
-      name: 'Masala Dosa',
-      description: 'Crispy rice crepe filled with spiced potato masala',
+      name: "Masala Dosa",
+      description: "Crispy rice crepe filled with spiced potato masala",
       price: 6.5,
       available: true,
-      imageUrl: 'https://www.cookwithmanali.com/wp-content/uploads/2022/04/Masala-Dosa.jpg',
+      imageUrl:
+        "https://www.cookwithmanali.com/wp-content/uploads/2022/04/Masala-Dosa.jpg",
     },
     {
-      name: 'Cold Coffee',
-      description: 'Iced coffee with milk, sugar, and a scoop of ice cream',
+      name: "Cold Coffee",
+      description: "Iced coffee with milk, sugar, and a scoop of ice cream",
       price: 3.5,
       available: true,
-      imageUrl: 'https://www.vegrecipesofindia.com/wp-content/uploads/2021/04/cold-coffee-recipe-1.jpg',
+      imageUrl:
+        "https://www.vegrecipesofindia.com/wp-content/uploads/2021/04/cold-coffee-recipe-1.jpg",
     },
     {
-      name: 'Chole Bhature',
-      description: 'Spicy chickpea curry served with deep-fried bread',
+      name: "Chole Bhature",
+      description: "Spicy chickpea curry served with deep-fried bread",
       price: 7.0,
       available: true,
-      imageUrl: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/06/chole-bhature-recipe.jpg',
+      imageUrl:
+        "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/06/chole-bhature-recipe.jpg",
     },
     {
-      name: 'Paneer Butter Masala',
-      description: 'Creamy tomato-based curry with soft paneer cubes',
+      name: "Paneer Butter Masala",
+      description: "Creamy tomato-based curry with soft paneer cubes",
       price: 8.0,
       available: true,
-      imageUrl: 'https://www.vegrecipesofindia.com/wp-content/uploads/2021/11/paneer-butter-masala-1.jpg',
+      imageUrl:
+        "https://www.vegrecipesofindia.com/wp-content/uploads/2021/11/paneer-butter-masala-1.jpg",
     },
   ];
 
   for (const item of menuItems) {
-    const exists = await prisma.menuItem.findFirst({ where: { name: item.name } });
+    const exists = await prisma.menuItem.findFirst({
+      where: { name: item.name },
+    });
     if (!exists) {
       await prisma.menuItem.create({ data: item });
       console.log(`Seeded menu item: ${item.name}`);
@@ -119,10 +149,10 @@ async function main() {
 }
 
 main()
-  .catch(e => {
+  .catch((e) => {
     console.error(e);
     process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
-  }); 
+  });

@@ -1,100 +1,55 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { Card, Typography } from 'antd';
-import { Utensils, LoaderCircle, Frown } from 'lucide-react';
-import useStore from '../store';
-
-const PageContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-`;
-
-const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #1a2233;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  letter-spacing: 1px;
-`;
-
-const MenuGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 2rem;
-`;
-
-const StyledCard = styled(Card)`
-  border-radius: 18px !important;
-  box-shadow: 0 4px 24px rgba(30, 34, 90, 0.08);
-  border: none !important;
-  background: linear-gradient(135deg, #fff 80%, #f3f6fa 100%);
-  .ant-card-head-title {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #2d3a4b;
-  }
-`;
-
-const Price = styled(Typography.Text)`
-  font-size: 1.1rem;
-  color: #bfa14a;
-  font-weight: 700;
-`;
-
-const Placeholder = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 300px;
-  color: #bfa14a;
-  opacity: 0.7;
-`;
+import { Utensils } from "lucide-react";
+import { useEffect } from "react";
+import MenuCard from "../components/MenuCard";
+import EmptyState from "../components/ui/EmptyState";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
+import useStore from "../store";
 
 function CataloguePage() {
   const { menu, fetchMenu, loading, error } = useStore();
 
-  useEffect(() => { fetchMenu(); }, [fetchMenu]);
+  useEffect(() => {
+    fetchMenu();
+  }, [fetchMenu]);
 
   return (
-    <PageContainer>
-      <Title>
-        <Utensils size={32} style={{ verticalAlign: 'middle', marginRight: 12 }} />
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Title */}
+      <h1 className="flex items-center justify-center text-4xl font-bold text-gray-900 mb-6 tracking-wide">
+        <Utensils className="mr-3" size={32} />
         Explore Our Exquisite Menu
-      </Title>
+      </h1>
+
+      {/* Content */}
       {loading ? (
-        <Placeholder>
-          <LoaderCircle size={48} className="spin" />
-          <div style={{ marginTop: 16 }}>Loading menu...</div>
-        </Placeholder>
+        <LoadingSpinner message="Loading menu..." />
       ) : error ? (
-        <Placeholder>
-          <Frown size={48} />
-          <div style={{ marginTop: 16 }}>Failed to load menu.</div>
-        </Placeholder>
+        <EmptyState
+          icon={Frown}
+          title="Failed to load menu"
+          description="We're having trouble loading the menu. Please try again later."
+        />
       ) : menu.length === 0 ? (
-        <Placeholder>
-          <Utensils size={48} />
-          <div style={{ marginTop: 16 }}>No menu items available yet.</div>
-        </Placeholder>
+        <EmptyState
+          icon={Utensils}
+          title="No menu items available yet"
+          description="Our chef is working on creating delicious dishes. Check back soon!"
+        />
       ) : (
-        <MenuGrid>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {menu.map((item) => (
-            <StyledCard
+            <MenuCard
               key={item.id}
-              title={item.name}
-              bordered={false}
-              extra={<Price>${item.price.toFixed(2)}</Price>}
-            >
-              <p style={{ minHeight: 60 }}>{item.description}</p>
-            </StyledCard>
+              item={item}
+              readOnly={true}
+              showRating={true}
+              showCookTime={true}
+            />
           ))}
-        </MenuGrid>
+        </div>
       )}
-    </PageContainer>
+    </div>
   );
 }
 
-export default CataloguePage; 
+export default CataloguePage;
