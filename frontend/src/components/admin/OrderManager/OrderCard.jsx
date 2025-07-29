@@ -56,7 +56,7 @@ const OrderCard = ({ order, onUpdatePayment, onDelete }) => {
 
   const totalAmount =
     order.items?.reduce(
-      (sum, item) => sum + (item.price || 0) * item.quantity,
+      (sum, item) => sum + (item.menuItem?.price || 0) * item.quantity,
       0
     ) || 0;
 
@@ -101,14 +101,35 @@ const OrderCard = ({ order, onUpdatePayment, onDelete }) => {
         <div className="space-y-2 mb-4">
           <div className="text-sm">
             <span className="text-muted-foreground">Items: </span>
-            <span className="text-foreground">
-              {order.items
-                ?.map((item) => `${item.menuItemId} x${item.quantity}`)
-                .join(", ") || "No items"}
-            </span>
+            <div className="mt-1 space-y-1">
+              {order.items?.map((item, index) => (
+                <div key={index} className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    {item.menuItem?.imageUrl && (
+                      <img 
+                        src={item.menuItem.imageUrl} 
+                        alt={item.menuItem.name}
+                        className="w-6 h-6 rounded object-cover"
+                      />
+                    )}
+                    <span className="text-foreground">
+                      {item.menuItem?.name || `Item ${item.menuItemId}`}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground">
+                      {formatCurrency(item.menuItem?.price || 0)} x {item.quantity}
+                    </span>
+                    <span className="font-medium">
+                      {formatCurrency((item.menuItem?.price || 0) * item.quantity)}
+                    </span>
+                  </div>
+                </div>
+              )) || "No items"}
+            </div>
           </div>
 
-          <div className="text-sm">
+          <div className="text-sm pt-2 border-t border-border">
             <span className="text-muted-foreground">Total: </span>
             <span className="font-semibold text-foreground">
               {formatCurrency(totalAmount)}

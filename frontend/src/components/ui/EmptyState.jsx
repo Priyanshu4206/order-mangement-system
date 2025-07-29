@@ -7,10 +7,27 @@ const EmptyState = ({
   action,
   className = '' 
 }) => {
+  const renderIcon = () => {
+    if (!icon) return null;
+    
+    // If icon is already a JSX element, render it directly
+    if (React.isValidElement(icon)) {
+      return icon;
+    }
+    
+    // If icon is a component reference, create a JSX element
+    if (typeof icon === 'function' || typeof icon === 'object') {
+      const IconComponent = icon;
+      return <IconComponent className="w-12 h-12 text-muted-foreground" />;
+    }
+    
+    return null;
+  };
+
   return (
     <div className={`text-center py-12 ${className}`}>
       <div className="flex justify-center mb-4">
-        {icon}
+        {renderIcon()}
       </div>
       <h3 className="text-lg font-semibold text-foreground mb-2">
         {title}

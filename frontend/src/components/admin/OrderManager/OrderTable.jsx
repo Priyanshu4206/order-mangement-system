@@ -38,10 +38,21 @@ const OrderTable = ({ orders, onUpdatePayment, onDelete }) => {
       key: "items",
       header: "Items",
       render: (items) => (
-        <div className="max-w-xs truncate">
-          {items
-            ?.map((item) => `${item.menuItemId} x${item.quantity}`)
-            .join(", ") || "No items"}
+        <div className="max-w-xs">
+          {items?.map((item, index) => (
+            <div key={index} className="text-xs flex items-center gap-2 mb-1">
+              {item.menuItem?.imageUrl && (
+                <img 
+                  src={item.menuItem.imageUrl} 
+                  alt={item.menuItem.name}
+                  className="w-4 h-4 rounded object-cover"
+                />
+              )}
+              <span className="truncate">
+                {item.menuItem?.name || `Item ${item.menuItemId}`} x{item.quantity}
+              </span>
+            </div>
+          )) || "No items"}
         </div>
       ),
     },
@@ -52,7 +63,7 @@ const OrderTable = ({ orders, onUpdatePayment, onDelete }) => {
       render: (_, order) => {
         const total =
           order.items?.reduce(
-            (sum, item) => sum + (item.price || 0) * item.quantity,
+            (sum, item) => sum + (item.menuItem?.price || 0) * item.quantity,
             0
           ) || 0;
         return <span className="font-semibold">{formatCurrency(total)}</span>;

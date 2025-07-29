@@ -66,7 +66,24 @@ function KitchenDashboard() {
       title: 'Items',
       dataIndex: 'items',
       key: 'items',
-      render: items => items.map(i => `${i.menuItemId} x${i.quantity}`).join(', '),
+      render: items => (
+        <div>
+          {items?.map((item, index) => (
+            <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+              {item.menuItem?.imageUrl && (
+                <img 
+                  src={item.menuItem.imageUrl} 
+                  alt={item.menuItem.name}
+                  style={{ width: '20px', height: '20px', borderRadius: '4px', objectFit: 'cover' }}
+                />
+              )}
+              <span>
+                {item.menuItem?.name || `Item ${item.menuItemId}`} x{item.quantity}
+              </span>
+            </div>
+          ))}
+        </div>
+      ),
     },
     {
       title: 'Status',

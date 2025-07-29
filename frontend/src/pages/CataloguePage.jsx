@@ -1,4 +1,4 @@
-import { Utensils } from "lucide-react";
+import { Frown, Utensils } from "lucide-react";
 import { useEffect } from "react";
 import MenuCard from "../components/MenuCard";
 import EmptyState from "../components/ui/EmptyState";
